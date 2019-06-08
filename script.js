@@ -9,7 +9,7 @@ const STORE = {
     {id: cuid(), name: 'hot sauce', checked: true},
     {id: cuid(), name: 'milk', checked: false}
   ],
-  hideCompleted: false
+  hideCompleted: false,
 };
 
 function generateItemElement(item) {
@@ -126,17 +126,41 @@ function titleEdit() {
 
 function handleTitleEdit() {
   console.log('handleTitleEdit clicked, ran');
-
+//.prompt()
 }
 
 //User can type in a search term and the displayed list will be 
 //filtered by item names only containing that search term
-function searchList() {
- 
+// function searchList(find) {
+//   console.log('searching the list');
+//   STORE.items.search = find;
+  
+// }
+
+function renderSearchList(term) {
+  let filteredItems = STORE.items;
+  filteredItems = filteredItems.filter(item => {
+    console.log('item.name ',item.name);
+    console.log('term ', term);
+    return (term === item.name);
+  });
+  
+  const shoppingListItemsString = generateShoppingItemsString(filteredItems);
+    
+  // insert that HTML into the DOM 
+  $('.js-shopping-list').html(shoppingListItemsString);
 }
 
+
 function handleSearchList() {
-  console.log('handleSearchList clicked, ran');
+  $('#js-search-tool-controls button').click(function(event) {
+    console.log('handleSearchList clicked, ran');
+    event.preventDefault();
+    const searchForItem = $('.js-search-bar-entry').val();
+    $('.js-search-bar-entry').val('');
+    renderSearchList(searchForItem);
+    
+  });
 }
 
 
@@ -149,6 +173,7 @@ function handleShoppingList() {
   handleToggleHideFilter();
   handleTitleEdit();
   handleSearchList();
+  
 }
 
 $(handleShoppingList);
